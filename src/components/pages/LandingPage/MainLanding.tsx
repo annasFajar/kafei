@@ -1,13 +1,9 @@
 import coffeImage from "../../../assets/images/coffee-shop.png"
+import { categorys } from "../../../types/order"
 import ListMenu from "./ListMenu"
 
 const MainLandingPage = () => {
 
-    const categorys = [
-        'All','kopi','ksd','safs'
-    ]
-
-    
 
     return <>
         <main className="min-h-screen scroll-smooth">
@@ -64,23 +60,16 @@ const MainLandingPage = () => {
                             console.log('param category berubah')
                         }
                     }}  defaultValue='All' id="" className="border-1 border-slate-500 rounded-md">
-                        {categorys.map((category) => (
-                            <option key={category} value={category} >
-                                {category}
-                            </option>
+                        {categorys.map((category)  => (
+                            <option value={category} key={category}>{category}</option>
                         ))}
                     </select>
                 </div>
 
-                {/* card */}
-                <div className="flex flex-wrap items-center justify-center gap-2">
-                    <ListMenu/>
-                </div>
+                <ListMenu/>
             </section>
 
-            {/* pagination */}
-            <div className="flex items-center justify-center gap-2">
-            </div>
+            
 
             {/* section tentang kami */}
             <section className="flex flex-col items-center justify-center mt-20 gap-2">

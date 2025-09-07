@@ -1,11 +1,11 @@
+import { type menuResponse } from "../types/order"
 import { fetchApi } from "../utils/fetch"
 
-export const getMenu = async (
-    page:number,
-    pageSize:number,
-) => {
-    const api = `${import.meta.env.VITE_URL_API}/menu?page=${page}&pageSize=${pageSize}`
+const api = `${import.meta.env.VITE_URL_API}`
 
-    const result = await fetchApi(api,{'method':'GET'})
-    return result
+export const menuPagination = async (page:number, limit:number) => {
+    const servicePage = `${api}/menu?page=${page}&pageSize=${limit}`
+    const response = await fetchApi<menuResponse>(servicePage)
+    return response
 }
+
