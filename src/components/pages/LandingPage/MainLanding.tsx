@@ -1,5 +1,4 @@
 import coffeImage from "../../../assets/images/coffee-shop.png"
-import { categorys } from "../../../types/order"
 import ListMenu from "./ListMenu"
 
 const MainLandingPage = () => {
@@ -49,23 +48,6 @@ const MainLandingPage = () => {
             {/* section Produk Menu */}
             <section className="flex flex-col items-center justify-center gap-4 m-3 p-4">
                 <h1 className="text-4xl font-bold text-yellow-950">Explore Our Best Menu</h1>
-                {/* filter */}
-                <div className="p-2 flex gap-4">
-                    <input type="search" name="search" id="" className="border-1 border-gray-500 rounded-md"/>
-                    <select name="" onChange={(e)=> {
-                        const selected = e.target.value
-                        if (selected === 'All') {
-                            console.log('hapus url param')
-                        } else {
-                            console.log('param category berubah')
-                        }
-                    }}  defaultValue='All' id="" className="border-1 border-slate-500 rounded-md">
-                        {categorys.map((category)  => (
-                            <option value={category} key={category}>{category}</option>
-                        ))}
-                    </select>
-                </div>
-
                 <ListMenu/>
             </section>
 
