@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react"
-import { categorys, type dataMenu, type metadataMenu } from "../../../types/order"
-import { fetchMenus } from "../../../services/menu.service"
+import { categorys, type metadataMenu } from "../../../types/order"
+import { fetchMenus, getRate } from "../../../services/menu.service"
 import { useSearchParams } from "react-router-dom"
 import { cleanParams } from "../../../utils/cleanParam"
 import MenuCardSkeleton from "../../ui/shimmer/MenuCardSkeleton"
 import CardMenu from "../../ui/card/CardMenu"
+import type { typeHandle } from "../../../types/menu.pagination"
+import { useDebounce } from "use-debounce"
+import {  type MenuRate } from "../../../types/props/productReview"
 
 const ListMenu = () => {
-    const [items, setItems] = useState<dataMenu[]>([]) 
+    // const [items, setItems] = useState<dataMenu[]>([]) 
     const [metadata, setMetadata] = useState<metadataMenu | null>(null)
     const [currentpage, setCurrentpage] = useState<number>(1)
     const [searchParams, setSearchParams] = useSearchParams()
     const [search, setSearch] = useState<string>(searchParams.get('search') || '')
     const [category, setCategory] = useState<string>(searchParams.get('category') || '')
+    const [debouncedSearch] = useDebounce(search, 500)
+    const [loading, setloading] = useState<boolean>(true)
+    const [menuWithRate, setmenuWithRate] = useState<MenuRate[]>([])
     
     // const startMenu = async (page:number):Promise<void> => {
     //     const response = await menuPagination(page,8)
@@ -64,28 +70,52 @@ const ListMenu = () => {
     // }
     const params = new URLSearchParams(searchParams)
 
-    type typeHandle = {
-        clickTo?:number, 
-        filterCategory?:string
-    }
 
     const handleMenu = async ({clickTo}:typeHandle) => {
-        const response = await fetchMenus(clickTo,{search:search, category:category})
-        const menu = response.data
-        const metadata = response.metadata
-        setItems(menu)
-        setMetadata(metadata)
-        setCurrentpage(clickTo??1)
-        // setSearchParams(search)
-        const clean = await cleanParams({search:search, category:category})
-        // console.log(`ui: ${category}`)
-        if (Object.keys(clean).length > 0) {
-            setSearchParams(clean)
-        } else {
-            params.delete('category')
-            params.delete('search')
-            setSearchParams(params)
+        setloading(true)
+        console.log(`initializing....`)
+        try {
+            const response = await fetchMenus(clickTo || 1,{search:search, category:category})
+            const menus = response.data
+            const metadata = response.metadata
+            // setItems(menu)
+            setMetadata(metadata)
+            setCurrentpage(clickTo??1)
+            // setSearchParams(search)
+            const clean = await cleanParams({search:search, category:category})
+            // console.log(`ui: ${category}`)
+            if (Object.keys(clean).length > 0) {
+                setSearchParams(clean)
+            } else {
+                params.delete('category')
+                params.delete('search')
+                setSearchParams(params)
+            }
+            console.log(`data muncul`)
 
+            try {
+                const menuWithRating = await Promise.all(
+                    menus.map(async (menu) => {
+                        const result = await getRate(menu.id)
+                        const reviews = result.reviews
+                        const rate = reviews.averageRating
+                        return {
+                            ...menu,
+                            averageRating: rate
+                        }
+                    })
+                )
+                setmenuWithRate(menuWithRating)
+                console.log(menuWithRate)
+            } catch (error) {
+                console.log(`2. error nangkep rate: ${error}`)
+            }
+
+        } catch (error) {
+            console.log(`1. error nangkep menu: ${error}`)
+        } finally {
+            setloading(false)
+            console.log(`selesai initializing !!`)
         }
         // console.log(`param if: ${params}`)
     }
@@ -93,31 +123,31 @@ const ListMenu = () => {
     useEffect(()=> {
         handleMenu({clickTo:1})
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    },[]) //on mount (sekali jln)
 
     useEffect(()=>{
         handleMenu({clickTo:currentpage})
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[currentpage,category, searchParams])
+    },[currentpage,category, searchParams, debouncedSearch]) // halaman, filter, param, search
     
-    useEffect(()=> {
-        const handler = setTimeout(async () => {
-            handleMenu({clickTo:currentpage})
-        }, 500);
-        return () => clearTimeout(handler)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search])
+    // useEffect(()=> {
+    //     const handler = setTimeout(async () => {
+    //         handleMenu({clickTo:currentpage})
+    //     }, 500);
+    //     return () => clearTimeout(handler)
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [search])
     
     return <>
         {/* filter */}
         <div className="p-2 flex gap-4">
             {/* search */}
-            <input type="search" name="search" id="" className="border-1 border-gray-500 rounded-md" onChange={(e)=>{
+            <input type="search" name="search" id="" value={search} className="border-1 border-gray-500 rounded-md" onChange={(e)=>{
                 setSearch(e.target.value)
                 setCurrentpage(1)
             }}/>
             {/* dropdown */}
-            <select name="" onChange={(e)=>{
+            <select name="" value={category} onChange={(e)=>{
                     if (e.target.value === 'All') {
                         setCategory('')
                     } else {
@@ -125,7 +155,7 @@ const ListMenu = () => {
                     }
                     setCurrentpage(1)
                 }}  
-                defaultValue='All' id="" className="border-1 border-slate-500 rounded-md">
+                id="" className="border-1 border-slate-500 rounded-md">
                 {categorys.map((category)  => (
                     <option value={category} key={category}>{category}</option>
                 ))}
@@ -135,10 +165,22 @@ const ListMenu = () => {
 
         <div className="">
             {/* card */}
-            <div className="flex items-center justify-center flex-wrap gap-2 lg:mx-40">
-                {items.map(({id, image_url, name, price, category}) => (
-                    <CardMenu key={id} img={image_url} category={category} name={name} price={price}/>
-                ))}
+            <div className="flex items-center justify-center flex-wrap gap-4 lg:mx-40">
+                {loading ? (
+                    Array.from({length:8}).map((_,index) => (
+                        <MenuCardSkeleton key={index}/>
+                    ))                    
+                ):( 
+                    menuWithRate.length > 0 ? (
+                        menuWithRate.map(({id, image_url, name, price, category,averageRating}) => (
+                            <CardMenu key={id} image_url={image_url} category={category} name={name} price={price} averageRating={averageRating} />
+                        ))
+                    ):(
+                        <div>
+                            <p>product not found</p>
+                        </div>
+                    )
+                )}
             </div>
 
             {/* pagination */}

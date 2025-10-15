@@ -3,4 +3,9 @@ type pagination = {
     search?: string
 }
 
-export type { pagination }
+type typeHandle = {
+    clickTo?:number, 
+    filterCategory?:string
+}
+
+export type { pagination, typeHandle }

@@ -1,5 +1,7 @@
 import coffeImage from "../../../assets/images/coffee-shop.png"
 import ListMenu from "./ListMenu"
+import Reviews from "./Reviews"
+import CreateReview from "../../ui/review/CreateReview"
 
 const MainLandingPage = () => {
 
@@ -24,18 +26,18 @@ const MainLandingPage = () => {
                     </div>
 
                     {/* hamburger menu */}
-                    <div className="flex items-center justify-center min-sm:hidden">
+                    <div className="flex-center min-sm:hidden">
                         <h3>H</h3>
                     </div>
                 </div>
             </nav>
 
 
-
+            {/* Home */}
             <div>
-                <div className="relative ">
+                <div className="relative">
                     <img src={coffeImage} alt="kopi" className="object-cover w-full h-full sm:h-[300px] " />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 " >
+                    <div className="absolute inset-0 flex-center bg-black/50 " >
                         <div className="text-center  text-white">
                             <h1 className="text-5xl mb-4 font-bold">Kāfēi</h1>
                             <p className="text-2xl">Enjoy a Cup of Happiness</p>
@@ -46,15 +48,14 @@ const MainLandingPage = () => {
 
 
             {/* section Produk Menu */}
-            <section className="flex flex-col items-center justify-center gap-4 m-3 p-4">
-                <h1 className="text-4xl font-bold text-yellow-950">Explore Our Best Menu</h1>
+            <section className="section">
+                <h1 className="text-4xl font-bold text-yellow-950 text-center">Explore Our Best Menu</h1>
                 <ListMenu/>
             </section>
-
             
 
-            {/* section tentang kami */}
-            <section className="flex flex-col items-center justify-center mt-20 gap-2">
+            {/* section abouyUs */}
+            <section className="section">
                 <h1 className="font-bold text-4xl">About Us</h1>
                 <p className=" text-center">
                     At Kāfēi, we are passionate about crafting the perfect cup of coffee, served in a cozy and welcoming environment where you can relax and enjoy the finest brews.
@@ -62,19 +63,22 @@ const MainLandingPage = () => {
             </section>
 
 
-            {/* section pengalaman pembeli */}
-            <section className="flex flex-col justify-center items-center mt-20 gap-2 p-1">
-                <h1 className="font-bold text-4xl">Customer Testimonials</h1>
-                <div className="flex flex-col justify-center items-center p-3 border-2  gap-3">
-                    <h1>'rate'</h1>
-                    <h1>'ulasan'</h1>
-                    <h1>'a/n'</h1>
-                </div>
+            {/* section Testimonial */}
+            <section className="section px-0">
+                <h1 className="font-bold text-4xl text-center">Customer Testimonials</h1>
+                <Reviews/>
             </section>
 
+            {/* createReview */}
+            <div>
+                <CreateReview/>
+            </div>
+
+
+            {/* footer contact*/}
             <footer className="bg-[#21443c] mt-5">
-                <div className=" py-8 px-6">
-                    <div className="grid md:grid-cols-4 items-center justify-center max-md:text-center gap-8 ">
+                <div className=" pt-8 px-6">
+                    <div className="grid mb-6 md:grid-cols-4 items-center justify-center gap-8 ">
                         <div className="text-white h-full">
                             <h1 className="text-2xl font-bold mb-4">Kafei</h1>
                             <p>Serving the best coffee, tea, and pastries to brighten your day.</p>
@@ -96,7 +100,11 @@ const MainLandingPage = () => {
                                 <p>o</p>
                                 <p>o</p>
                             </div>
+                            
                         </div>
+                    </div>
+                    <div className="flex-center w-full h-full border-t-1 border-[#296c5e] pt-6 pb-9">
+                        <h5 className="text-white font-light">© 2025 Kāfēi by Annas. All Right Reserved.</h5>
                     </div>
                 </div>
             </footer>

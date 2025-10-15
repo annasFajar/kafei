@@ -1,15 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-@import 'tailwindcss';
+/* @import 'tailwindcss'; */
+@import "tailwindcss";
 
-@layer theme, base, components, utilities;
+
+
+/* @layer theme, base, components, utilities; */
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
 
-body,
-#root {
-    @apply font-sans;
+
+@theme {
+
+    --animate-slide-left: slide-left 120s linear infinite;
+    --animate-slide-right: slide-right 120s linear infinite;
+
+    @keyframes slide-left {
+        0% {
+            transform: translateX(0)        ;
+            -webkit-transform:;
+            -moz-transform:;
+            -ms-transform:;
+            -o-transform:;
+        }
+        100% {
+            /*total24pxjumlahgap*/
+            transform: translateX(calc(-50% - 28px))        ;
+            -webkit-transform: translateX(calc(-50% - 28px))        ;
+            -moz-transform: translateX(calc(-50% - 28px))        ;
+            -ms-transform: translateX(calc(-50% - 28px))        ;
+            -o-transform: translateX(calc(-50% - 28px))        ;
 }
+    }
+
+    @keyframes slide-right {
+        0% {
+            transform: translateX(calc(-50% - 24px))        ;
+            -webkit-transform: translateX(calc(-50% - 24px))        ;
+            -moz-transform: translateX(calc(-50% - 24px))        ;
+            -ms-transform: translateX(calc(-50% - 24px))        ;
+            -o-transform: translateX(calc(-50% - 24px))        ;
+}
+        100% {
+            transform: translateX(0)        ;
+            -webkit-transform: translateX(0)        ;
+            -moz-transform: translateX(0)        ;
+            -ms-transform: translateX(0)        ;
+            -o-transform: translateX(0)        ;
+        }
+    }
+}
+
+
+
+/* @apply font-sans; */
+/* --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
+/* body,
+:root {
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+} */
 
 @layer base {
     *,
@@ -17,11 +66,16 @@ body,
     ::before,
     ::backdrop,
     ::file-selector-button {
-        box-sizing: border-box;
+        @apply p-0 m-0 border-0
+        /* box-sizing: border-box;
         border: 0 solid;
         margin: 0;
-        padding: 0;
+        padding: 0; */
     } 
+
+    body {
+        @apply font-sans 
+    }
 
     h1,
     h2,
@@ -29,14 +83,15 @@ body,
     h4,
     h5,
     h6 {
-        font-size: inherit;
-        font-weight: inherit;
+        @apply text-inherit;
+        /* font-size: inherit;
+        font-weight: inherit; */
     }
     
     ol,
     ul,
     menu {
-        list-style: none;
+        @apply list-none;
     }
     
     img,
@@ -47,13 +102,25 @@ body,
     iframe,
     embed,
     object {
-        display: block;
-        vertical-align: middle;
+        @apply block align-middle;
+        /* display: block;
+        vertical-align: middle; */
     }
     
     img,
     video {
-        max-width: 100%;
-        height: auto;
+        @apply max-w-full h-auto;
+        /* max-width: 100%;
+        height: auto; */
     }
+}
+
+@layer components {
+    .section {
+        @apply flex flex-col justify-center items-center mt-20 gap-2 px-4;
+    }
+}
+
+@utility flex-center {
+    @apply flex justify-center items-center;
 }

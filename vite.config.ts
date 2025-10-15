@@ -9,7 +9,7 @@ export default defineConfig(({mode}) => {
   return {
     plugins: [
       react(),
-      tailwindcss()
+      tailwindcss(),
     ],
     server: {
       host: true,
@@ -20,6 +20,13 @@ export default defineConfig(({mode}) => {
       cors: true,
       // open: true,
       strictPort: true,
+      proxy: { // CORS API bermasalah jadi menggunakan ini
+        "/api": {
+        target: "https://wpu-cafe.vercel.app", // API publik
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, "/api"),
+        }
+      }
     }
   }
 })
