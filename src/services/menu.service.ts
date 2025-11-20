@@ -18,6 +18,7 @@ export const fetchMenus = async (page?:number, params?:pagination):Promise<menuR
         })
         console.log(`query: ${query.toString()}`)
         console.log(`api: ${api}`)
+        
 
         const url = `${api}/menu?${query.toString()}`
         console.log(`url: ${url}`)
