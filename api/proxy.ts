@@ -1,21 +1,12 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const path = req.query.path;
+  const fullPath = req.url!.replace(/^\/api\//, "");  
 
-  // normalisasi path
-  const endpoint = Array.isArray(path)
-    ? path.join("/")
-    : typeof path === "string"
-    ? path
-    : "";
+  const targetURL = `https://wpu-cafe.vercel.app/api/${fullPath}`;
 
-  // ambil query string setelah tanda ?
-  const qs = req.url!.split("?")[1] || ""
-
-  const targetURL = `https://wpu-cafe.vercel.app/api/${endpoint}${qs ? `?${qs}` : ""}`
-
-  console.log("Proxy →", targetURL)
+  console.log("Proxy →", targetURL);
+  console.log("Incoming req.query:", req.query);
 
   try {
     const response = await fetch(targetURL, {
@@ -25,22 +16,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         "Content-Type": "application/json",
       },
       body: req.method !== "GET" ? JSON.stringify(req.body) : undefined,
-    })
+    });
 
-    // ambil text dulu (karena bisa JSON atau HTML)
-    const text = await response.text()
-
-    // coba parse JSON
+    const text = await response.text();
     try {
-      return res.status(response.status).json(JSON.parse(text))
+      return res.status(response.status).json(JSON.parse(text));
     } catch {
-      // kalau bukan JSON, kirim raw HTML/teks biar tahu error backend
-      return res.status(500).json({
-        error: "Invalid JSON from backend",
-        raw: text,
-      })
+      return res.status(500).json({ error: "Invalid JSON", raw: text });
     }
   } catch (err: any) {
-    res.status(500).json({ error: "Proxy error", details: err.message })
+    return res.status(500).json({ error: "Proxy error", details: err.message });
   }
 }
