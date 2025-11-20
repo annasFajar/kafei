@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { type ReviewsItem } from "../../../types/props/productReview"
 import { fetchReview } from "../../../services/review.service"
-import StarRate from "../../ui/form/starRate"
+import StarRate from "../../ui/form/StarRate"
 
 const Reviews = () => {
     const [reviews, setreviews] = useState<ReviewsItem[]>([])

@@ -180,8 +180,8 @@ const ListMenu = () => {
                     ))                    
                 ):( 
                     menuWithRate.length > 0 ? (
-                        menuWithRate.map(({id, image_url, name, price, category,averageRating,description}) => (
-                            <CardMenu key={id} image_url={image_url} category={category} name={name} price={price} averageRating={averageRating} description={description}/>
+                        menuWithRate.map(({id, image_url, name, price, category,averageRating,description,created_at,is_available}) => (
+                            <CardMenu key={id} image_url={image_url} category={category} name={name} price={price} averageRating={averageRating} description={description} created_at={created_at} is_available={is_available} id={id}/>
                         ))
                     ):(
                         <div>

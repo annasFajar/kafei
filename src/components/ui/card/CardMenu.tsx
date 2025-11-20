@@ -1,8 +1,8 @@
 import { MdOutlineShoppingBag } from "react-icons/md"
 import type { MenuRate} from "../../../types/props/productReview" 
-import StarRate from "../form/starRate"
+import StarRate from "../form/StarRate"
 
-const CardMenu = ({id,name,category,image_url,price,averageRating,description}: MenuRate) => {
+const CardMenu = ({id,name,category,image_url,price,averageRating}: MenuRate) => {
     return <>
             <div key={id} className="h-52 w-32 md:w-60 md:h-96 border-gray-600 border-1 overflow-hidden relative flex justify-center items-center rounded-2xl">
                 <img className="object-cover h-full w-full object-center" src={image_url} alt="" />

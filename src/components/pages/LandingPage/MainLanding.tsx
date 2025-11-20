@@ -3,7 +3,7 @@ import ListMenu from "./ListMenu"
 import Reviews from "./Reviews"
 import CreateReview from "../../ui/form/FormReview"
 import Sidebar from "../../ui/sidebar/Sidebar"
-import { FaFacebook, FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa"
+import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa"
 
 const MainLandingPage = () => {
 

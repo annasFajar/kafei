@@ -3,27 +3,27 @@ import { RxHamburgerMenu } from "react-icons/rx"
 
 
 const Sidebar = () => {
-    const hamburgerRef = useRef(null)
-    const sidebarRef = useRef(null)
+    const hamburgerRef = useRef<HTMLButtonElement>(null)
+    const sidebarRef = useRef<HTMLDivElement>(null)
     const [hamburger,setHamburger] = useState(false)
 
     useEffect(()=>{
-        const handler = (e) => {
+        const handler = (e:MouseEvent) => {
             if(hamburger) {
                 // klik di sidebar
-                if (sidebarRef.current.contains(e.target)) {
+                if (sidebarRef.current?.contains(e.target as Node)) {
                     console.log('dalam')
                 }
                 // klik selain di sidebar dan selain di hamburger
-                if (!sidebarRef.current.contains(e.target) && !hamburgerRef.current.contains(e.target)) {
+                if (!sidebarRef.current?.contains(e.target as Node) && !hamburgerRef.current?.contains(e.target as Node)) {
                     console.log('luar')
                     setHamburger(false)
                 }
             }
         }
 
-        document.addEventListener('click',handler)
-        return ()=>document.removeEventListener('click',handler)
+        document.addEventListener('click', handler)
+        return ()=>document.removeEventListener('click', handler)
     },[hamburger])
     
     return <>

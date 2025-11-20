@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm, useStore } from "@tanstack/react-form"
-import { fetchMenus, getMenus } from "../../../services/menu.service"
+import { getMenus } from "../../../services/menu.service"
 import type { dataMenu } from "../../../types/order"
 import { useDebounce } from "use-debounce"
 import { fetchCreate } from "../../../services/review.service"
@@ -18,7 +18,7 @@ const FormReview = () => {
     // const [star, setStar] = useState<number>(5)
     
     // buka modal
-    const openModal = (e) => {
+    const openModal = (e:HTMLElement) => {
         if (modal) {
             if (e.id === 'luar' || e.id === 'button') {
                 setModal(false)
@@ -80,7 +80,7 @@ const FormReview = () => {
         console.log(res)
     }
     
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         Form.handleSubmit()
     }
@@ -96,7 +96,7 @@ const FormReview = () => {
     return <>
         <div className="flex-center gap-1 fixed bottom-8 right-5 flex-col z-3 group">
             <button id="button" className="h-12 w-12 flex-center rounded-4xl bg-[#234b41]  hover:cursor-pointer hover:bg-[#31695d]" 
-            onClick={(e)=>openModal(e.target)}>
+            onClick={(e:React.MouseEvent<HTMLElement>)=>openModal(e.currentTarget)}>
             <div>
                 <FaRegHeart className="h-6 w-6 text-white" />
             </div>
@@ -106,7 +106,7 @@ const FormReview = () => {
 
         {/* openModal */}
         {modal && (
-            <div id="luar" className="h-screen w-screen fixed top-0 z-11 flex-center backdrop-blur-[2px] bg-black/20" onClick={(e)=>openModal(e.target)}>
+            <div id="luar" className="h-screen w-screen fixed top-0 z-11 flex-center backdrop-blur-[2px] bg-black/20" onClick={(e:React.MouseEvent<HTMLElement>)=>openModal(e.currentTarget)}>
                 <form 
                     onSubmit={(e)=>handleSubmit(e)}
                     className="bg-white w-80 sm:w-[450px] rounded-2xl"
@@ -136,7 +136,7 @@ const FormReview = () => {
                                                     {menus.map((menu)=>(
                                                         <>
                                                             <div className="bg-amber-700 p-2" onClick={(e)=> {
-                                                                field.setValue(e.currentTarget.textContent)
+                                                                field.setValue(e.currentTarget.textContent ?? '')
                                                                 field.form.setFieldValue('idMenu',menu.id)
                                                                 setShowMenu(false)
                                                                 setShowPilihan(true)
@@ -219,7 +219,7 @@ const FormReview = () => {
                             <div>
                                 <Form.Subscribe
                                     selector={(state)=>[state.canSubmit,state.isSubmitting]}
-                                    children={([canSubmit,isSubmitting])=>{
+                                    children={([isSubmitting])=>{
                                         return <div>
                                             <button 
                                                 type="submit"

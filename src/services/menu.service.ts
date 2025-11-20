@@ -24,7 +24,7 @@ export const fetchMenus = async (page?:number, params?:pagination):Promise<menuR
         return result
     }
 
-export const getMenus = async (search) => {
+export const getMenus = async (search:string) => {
     const url = `${api}/menu?search=${search}`
     const response = await fetchApi<menuResponse>(url)
     const result = response.data
