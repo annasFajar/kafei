@@ -16,9 +16,10 @@ export const fetchReview = async (page:number, pageSize:number) => {
 }
 
 export const fetchCreate = async (review:createReview) => {
-    const res = await fetchApi(`${import.meta.env.VITE_API_URL}/api/reviews`, {
+    const res = await fetchApi(`${import.meta.env.VITE_API_URL}/reviews`, {
         method:'POST',
         body: JSON.stringify(review)
     })
+    console.log(res)
     return res
 }

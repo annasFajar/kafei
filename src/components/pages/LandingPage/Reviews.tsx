@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { type ReviewsItem } from "../../../types/props/productReview"
 import { fetchReview } from "../../../services/review.service"
-import StarRate from "../../ui/review/starRate"
+import StarRate from "../../ui/form/starRate"
 
 const Reviews = () => {
     const [reviews, setreviews] = useState<ReviewsItem[]>([])
@@ -15,7 +15,7 @@ const Reviews = () => {
         handleReview()
     },[])
 
-    // const reviewReverse = reviews.slice().reverse()
+    const reviewReverse = reviews.slice().reverse()
     // reviewReverse.map((s)=> console.log(s.reviewer_name))
     return <>
         <div className="overflow-hidden w-full flex">
@@ -31,7 +31,7 @@ const Reviews = () => {
         </div>
         <div className="overflow-hidden flex w-full">
             <div className="flex animate-slide-left hover:[animation-play-state:paused] gap-2">
-                {[...reviews, ...reviews].map(({reviewer_name, rating, comment}, index) => (
+                {[...reviewReverse, ...reviewReverse].map(({reviewer_name, rating, comment}, index) => (
                     <div key={index} className={"w-64 p-3 min-h-40 border border-gray-300 rounded-2xl flex-shrink-0 cursor-pointer hover:bg-gray-100"}>
                         <h1 className="text-teal-800 font-semibold ">{reviewer_name}</h1>
                         <StarRate  rateProduk={rating}/>

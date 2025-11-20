@@ -15,6 +15,7 @@
     --animate-slide-left: slide-left 120s linear infinite;
     --animate-slide-right: slide-right 120s linear infinite;
 
+
     @keyframes slide-left {
         0% {
             transform: translateX(0)        ;
@@ -24,12 +25,11 @@
             -o-transform:;
         }
         100% {
-            /*total24pxjumlahgap*/
-            transform: translateX(calc(-50% - 28px))        ;
-            -webkit-transform: translateX(calc(-50% - 28px))        ;
-            -moz-transform: translateX(calc(-50% - 28px))        ;
-            -ms-transform: translateX(calc(-50% - 28px))        ;
-            -o-transform: translateX(calc(-50% - 28px))        ;
+            /*total24pxjumlahgap*/transform: translateX(calc(-50% - 28px))        ;
+            -webkit-transform:;
+            -moz-transform:;
+            -ms-transform:;
+            -o-transform:;
 }
     }
 
@@ -119,6 +119,16 @@
     .section {
         @apply flex flex-col justify-center items-center mt-20 gap-2 px-4;
     }
+    .label {
+        @apply font-semibold mb-1 text-[17px]
+    }
+    .input {
+        @apply border-[1px] border-gray-300 w-full mb-4 h-10 text-[16px] rounded-[9px] focus:ring-1 hover:cursor-text focus:ring-[#0f5f4b] focus:border-[#0f5f4b] outline-none p-2
+    }
+    .button {
+        @apply w-full bg-[#1f4c41] text-white h-9 rounded-[9px] hover:bg-[#0f5f4b] hover:cursor-pointer
+    }
+    
 }
 
 @utility flex-center {

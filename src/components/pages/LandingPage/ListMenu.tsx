@@ -140,14 +140,20 @@ const ListMenu = () => {
     
     return <>
         {/* filter */}
-        <div className="p-2 flex gap-4">
+        <div className="p-2 flex-center gap-2 flex-col sm:flex-row sm:gap-4 w-full">
             {/* search */}
-            <input type="search" name="search" id="" value={search} className="border-1 border-gray-500 rounded-md" onChange={(e)=>{
-                setSearch(e.target.value)
-                setCurrentpage(1)
+            <input type="search" name="search" 
+                id="" 
+                value={search} 
+                className="border-1 w-10/12 border-gray-500 rounded-md px-3 py-1 lg:px-4 lg:py-2 sm:w-80 focus:ring-2 focus:ring-[#2b927a] outline-none"
+                placeholder="Search menu.."
+                onChange={(e)=>{
+                    setSearch(e.target.value)
+                    setCurrentpage(1)
             }}/>
             {/* dropdown */}
-            <select name="" value={category} onChange={(e)=>{
+            <select name="" value={category} 
+                onChange={(e)=>{
                     if (e.target.value === 'All') {
                         setCategory('')
                     } else {
@@ -155,9 +161,11 @@ const ListMenu = () => {
                     }
                     setCurrentpage(1)
                 }}  
-                id="" className="border-1 border-slate-500 rounded-md">
+                id="" 
+                className="sm:w-44 w-10/12 p-1 lg:p-2 focus:ring-2 focus:ring-[#2b927a] outline-none border-1 border-slate-500 rounded-md">
                 {categorys.map((category)  => (
-                    <option value={category} key={category}>{category}</option>
+                    <option 
+                        value={category} key={category}>{category}</option>
                 ))}
             </select>
         </div>
@@ -165,15 +173,15 @@ const ListMenu = () => {
 
         <div className="">
             {/* card */}
-            <div className="flex items-center justify-center flex-wrap gap-4 lg:mx-40">
+            <div className="flex items-center justify-center flex-wrap gap-4 lg:mx-8 w-full">
                 {loading ? (
                     Array.from({length:8}).map((_,index) => (
                         <MenuCardSkeleton key={index}/>
                     ))                    
                 ):( 
                     menuWithRate.length > 0 ? (
-                        menuWithRate.map(({id, image_url, name, price, category,averageRating}) => (
-                            <CardMenu key={id} image_url={image_url} category={category} name={name} price={price} averageRating={averageRating} />
+                        menuWithRate.map(({id, image_url, name, price, category,averageRating,description}) => (
+                            <CardMenu key={id} image_url={image_url} category={category} name={name} price={price} averageRating={averageRating} description={description}/>
                         ))
                     ):(
                         <div>
@@ -186,8 +194,8 @@ const ListMenu = () => {
             {/* pagination */}
             <div className="flex items-center justify-center mt-7 gap-2">
                 {Array.from({length: metadata?.totalPages?? 0}, (_,i) => i+1).map((page) => (
-                    <div key={page} className={`h-6 w-6 border-1 border-black  
-                        ${currentpage === page ? `bg-red-600 ` : `bg-amber-200 cursor-pointer`}`}
+                    <div key={page} className={`h-6 w-6 border-1 p-3 border-black flex-center 
+                        ${currentpage === page ? `bg-[#091210] text-[#9b9b9b]` : `bg-[#21443c] text-white cursor-pointer`}`}
                     onClick={()=>setCurrentpage(page)}
                     >{page}</div>
                 ))}

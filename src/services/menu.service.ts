@@ -24,6 +24,13 @@ export const fetchMenus = async (page?:number, params?:pagination):Promise<menuR
         return result
     }
 
+export const getMenus = async (search) => {
+    const url = `${api}/menu?search=${search}`
+    const response = await fetchApi<menuResponse>(url)
+    const result = response.data
+    return result
+}
+
 export const getRate = async (id:string) => {
     const result = await fetchApi<MenuItemDetail>(`${api}/menu/${id}`)
     return result
