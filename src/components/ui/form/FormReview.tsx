@@ -21,9 +21,12 @@ const FormReview = () => {
     const openModal = (e:HTMLElement) => {
         if (modal) {
             if (e.id === 'luar' || e.id === 'button') {
+                console.log(e.id)
                 setModal(false)
             }
         } else {
+            console.log(e.id)
+            console.log('dalam')
             // lagi false
             setModal(true)
         }
@@ -96,7 +99,9 @@ const FormReview = () => {
     return <>
         <div className="flex-center gap-1 fixed bottom-8 right-5 flex-col z-3 group">
             <button id="button" className="h-12 w-12 flex-center rounded-4xl bg-[#234b41]  hover:cursor-pointer hover:bg-[#31695d]" 
-            onClick={(e:React.MouseEvent<HTMLElement>)=>openModal(e.currentTarget)}>
+            onClick={(e:React.MouseEvent<HTMLElement>)=>{
+                console.log(e.currentTarget)
+                return openModal(e.currentTarget)}}>
             <div>
                 <FaRegHeart className="h-6 w-6 text-white" />
             </div>
@@ -109,7 +114,9 @@ const FormReview = () => {
             <div id="luar" className="h-screen w-screen fixed top-0 z-11 flex-center backdrop-blur-[2px] bg-black/20" onClick={(e:React.MouseEvent<HTMLElement>)=>openModal(e.currentTarget)}>
                 <form 
                     onSubmit={(e)=>handleSubmit(e)}
-                    className="bg-white w-80 sm:w-[450px] rounded-2xl"
+                    id="form"
+                    onClick={(e)=>e.stopPropagation()}
+                    className="bg-white w-80 sm:w-[450px] rounded-2xl z-20"
                 >
                     <div className="flex-center flex-col p-5 gap-1 h-full">
                         <div className="flex justify-between w-full text-2xl font-bold  ml-3 mb-4">
@@ -219,11 +226,12 @@ const FormReview = () => {
                             <div>
                                 <Form.Subscribe
                                     selector={(state)=>[state.canSubmit,state.isSubmitting]}
-                                    children={([isSubmitting])=>{
+                                    children={([canSubmit,isSubmitting])=>{
                                         return <div>
                                             <button 
                                                 type="submit"
                                                 className="button"
+                                                disabled={!canSubmit || isSubmitting}
                                             >
                                             {isSubmitting ? '...':'Submit'}
                                             </button>
